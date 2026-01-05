@@ -54,7 +54,7 @@ In the above diagram, you can see the components and their relations.
 |------|--------|---------|
 | <a name="module_vector_agent_role"></a> [vector\_agent\_role](#module\_vector\_agent\_role) | terraform-aws-modules/iam/aws//modules/iam-role | 6.2.3 |
 | <a name="module_vector_aggregator_role"></a> [vector\_aggregator\_role](#module\_vector\_aggregator\_role) | terraform-aws-modules/iam/aws//modules/iam-role | 6.2.3 |
-| <a name="module_vector_s3_bucket"></a> [vector\_s3\_bucket](#module\_vector\_s3\_bucket) | terraform-aws-modules/s3-bucket/aws | 4.1.0 |
+| <a name="module_vector_s3_bucket"></a> [vector\_s3\_bucket](#module\_vector\_s3\_bucket) | terraform-aws-modules/s3-bucket/aws | 5.9.1 |
 | <a name="module_vector_sqs"></a> [vector\_sqs](#module\_vector\_sqs) | terraform-aws-modules/sqs/aws | 4.1.0 |
 
 ## Resources
