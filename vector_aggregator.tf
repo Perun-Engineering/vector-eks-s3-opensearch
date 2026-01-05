@@ -14,7 +14,7 @@ locals {
   default_aggregator_template_variables = {
     queue_url        = module.vector_sqs.queue_id,
     endpoint         = var.elasticsearch_endpoint,
-    region           = data.aws_region.current.name,
+    region           = data.aws_region.current.id,
     eks_cluster_name = var.eks_cluster_name
   }
   custom_aggregator_config = templatefile(var.aggregator_template_filename, merge(local.default_aggregator_template_variables, var.aggregator_template_variables))
@@ -23,7 +23,7 @@ locals {
     role = "Aggregator"
     serviceAccount = {
       annotations = {
-        "eks.amazonaws.com/role-arn" = module.vector_aggregator_role.iam_role_arn
+        "eks.amazonaws.com/role-arn" = module.vector_aggregator_role.arn
       }
     }
   }
@@ -104,14 +104,22 @@ resource "aws_iam_policy" "vector_aggregator" {
 }
 
 module "vector_aggregator_role" {
-  source                        = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version                       = "v5.38.0"
-  create_role                   = true
-  allow_self_assume_role        = false
-  role_description              = "Vector Aggregator IRSA"
-  role_name                     = "${data.aws_eks_cluster.eks.name}-vector-aggregator"
-  provider_url                  = data.aws_eks_cluster.eks.identity[0].oidc[0].issuer
-  role_policy_arns              = [aws_iam_policy.vector_aggregator.arn]
-  oidc_fully_qualified_subjects = ["system:serviceaccount:${local.helm_chart_config.namespace}:vector-aggregator"]
-  tags                          = var.tags
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role"
+  version = "6.2.3"
+
+  name        = "${data.aws_eks_cluster.eks.name}-vector-aggregator"
+  description = "Vector Aggregator IRSA"
+
+  # Enable OIDC provider trust
+  enable_oidc        = true
+  oidc_provider_urls = [replace(data.aws_eks_cluster.eks.identity[0].oidc[0].issuer, "https://", "")]
+  oidc_subjects      = ["system:serviceaccount:${local.helm_chart_config.namespace}:vector-aggregator"]
+  oidc_audiences     = ["sts.amazonaws.com"]
+
+  # Attach policies
+  policies = {
+    vector_aggregator = aws_iam_policy.vector_aggregator.arn
+  }
+
+  tags = var.tags
 }

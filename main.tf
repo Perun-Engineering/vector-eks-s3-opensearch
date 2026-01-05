@@ -4,11 +4,12 @@ data "aws_eks_cluster" "eks" {
 
 data "aws_region" "current" {}
 
+
 locals {
   default_helm_chart_config = {
     chart            = "vector"
     repository       = "https://helm.vector.dev"
-    version          = "0.34.0"
+    version          = "0.49.0"
     namespace        = "vector"
     create_namespace = true
   }

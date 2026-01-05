@@ -36,24 +36,24 @@ In the above diagram, you can see the components and their relations.
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.0.0 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | >= 2.11.0 |
-| <a name="requirement_utils"></a> [utils](#requirement\_utils) | >= 1.12.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 6.27.0 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | >= 3.1.1 |
+| <a name="requirement_utils"></a> [utils](#requirement\_utils) | >= 1.31.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.44.0 |
-| <a name="provider_helm"></a> [helm](#provider\_helm) | 2.13.0 |
-| <a name="provider_utils"></a> [utils](#provider\_utils) | 1.19.2 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.27.0 |
+| <a name="provider_helm"></a> [helm](#provider\_helm) | 3.1.1 |
+| <a name="provider_utils"></a> [utils](#provider\_utils) | 1.31.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_vector_agent_role"></a> [vector\_agent\_role](#module\_vector\_agent\_role) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | v5.38.0 |
-| <a name="module_vector_aggregator_role"></a> [vector\_aggregator\_role](#module\_vector\_aggregator\_role) | terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc | v5.38.0 |
+| <a name="module_vector_agent_role"></a> [vector\_agent\_role](#module\_vector\_agent\_role) | terraform-aws-modules/iam/aws//modules/iam-role | 6.2.3 |
+| <a name="module_vector_aggregator_role"></a> [vector\_aggregator\_role](#module\_vector\_aggregator\_role) | terraform-aws-modules/iam/aws//modules/iam-role | 6.2.3 |
 | <a name="module_vector_s3_bucket"></a> [vector\_s3\_bucket](#module\_vector\_s3\_bucket) | terraform-aws-modules/s3-bucket/aws | 4.1.0 |
 | <a name="module_vector_sqs"></a> [vector\_sqs](#module\_vector\_sqs) | terraform-aws-modules/sqs/aws | 4.1.0 |
 
