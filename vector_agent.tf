@@ -24,7 +24,7 @@ customConfig:
       inputs:
         - added_cluster_name
       type: aws_s3
-      region: "${data.aws_region.current.name}"
+      region: "${data.aws_region.current.id}"
       bucket: "${module.vector_s3_bucket.s3_bucket_id}"
       key_prefix: date=%Y-%m-%d/
       encoding:
@@ -47,7 +47,7 @@ affinity:
 EOF
 
   default_agent_template_vairables = {
-    region       = data.aws_region.current.name,
+    region       = data.aws_region.current.id,
     bucket       = module.vector_s3_bucket.s3_bucket_id
     cluster_name = var.eks_cluster_name
   }
@@ -58,7 +58,7 @@ EOF
     role = "Agent"
     serviceAccount = {
       annotations = {
-        "eks.amazonaws.com/role-arn" = module.vector_agent_role.iam_role_arn
+        "eks.amazonaws.com/role-arn" = module.vector_agent_role.arn
       }
     }
   }
@@ -115,14 +115,22 @@ resource "aws_iam_policy" "vector_agent" {
 }
 
 module "vector_agent_role" {
-  source                        = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version                       = "v5.38.0"
-  create_role                   = true
-  allow_self_assume_role        = false
-  role_description              = "Vector Agent IRSA"
-  role_name                     = "${data.aws_eks_cluster.eks.name}-vector-agent"
-  provider_url                  = data.aws_eks_cluster.eks.identity[0].oidc[0].issuer
-  role_policy_arns              = [aws_iam_policy.vector_agent.arn]
-  oidc_fully_qualified_subjects = ["system:serviceaccount:${local.helm_chart_config.namespace}:vector-agent"]
-  tags                          = var.tags
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role"
+  version = "6.2.3"
+
+  name        = "${data.aws_eks_cluster.eks.name}-vector-agent"
+  description = "Vector Agent IRSA"
+
+  # Enable OIDC provider trust
+  enable_oidc        = true
+  oidc_provider_urls = [replace(data.aws_eks_cluster.eks.identity[0].oidc[0].issuer, "https://", "")]
+  oidc_subjects      = ["system:serviceaccount:${local.helm_chart_config.namespace}:vector-agent"]
+  oidc_audiences     = ["sts.amazonaws.com"]
+
+  # Attach policies
+  policies = {
+    vector_agent = aws_iam_policy.vector_agent.arn
+  }
+
+  tags = var.tags
 }

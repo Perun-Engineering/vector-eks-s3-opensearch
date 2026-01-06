@@ -4,15 +4,15 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 5.0.0"
+      version = ">= 6.27.0"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = ">= 3.0.2"
+      version = ">= 3.1.1"
     }
     utils = {
       source  = "cloudposse/utils"
-      version = ">= 1.12.0"
+      version = ">= 1.31.0"
     }
   }
 }

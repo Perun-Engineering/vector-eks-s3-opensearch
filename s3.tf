@@ -7,7 +7,7 @@ data "aws_iam_policy_document" "s3_bucket_policy" {
     sid = "AccessForVectorAgentRole"
     principals {
       type        = "AWS"
-      identifiers = [module.vector_agent_role.iam_role_arn]
+      identifiers = [module.vector_agent_role.arn]
     }
     actions   = ["s3:ListBucket", "s3:PutObject"]
     resources = ["arn:aws:s3:::${local.bucket_name}", "arn:aws:s3:::${local.bucket_name}/*"]
@@ -16,7 +16,7 @@ data "aws_iam_policy_document" "s3_bucket_policy" {
     sid = "AccessForVectorAggregatorRole"
     principals {
       type        = "AWS"
-      identifiers = [module.vector_aggregator_role.iam_role_arn]
+      identifiers = [module.vector_aggregator_role.arn]
     }
     actions   = ["s3:GetObject"]
     resources = ["arn:aws:s3:::${local.bucket_name}/*"]
@@ -25,7 +25,7 @@ data "aws_iam_policy_document" "s3_bucket_policy" {
 
 module "vector_s3_bucket" {
   source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "4.1.0"
+  version = "5.9.1"
 
   bucket        = local.bucket_name
   acl           = null
