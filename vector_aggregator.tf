@@ -14,7 +14,7 @@ locals {
   default_aggregator_template_variables = {
     queue_url        = module.vector_sqs.queue_id,
     endpoint         = var.elasticsearch_endpoint,
-    region           = data.aws_region.current.id,
+    region           = data.aws_region.current.region,
     eks_cluster_name = var.eks_cluster_name
   }
   custom_aggregator_config = templatefile(var.aggregator_template_filename, merge(local.default_aggregator_template_variables, var.aggregator_template_variables))
@@ -92,6 +92,26 @@ data "aws_iam_policy_document" "vector_aggregator" {
     ]
     effect = "Allow"
   }
+
+  statement {
+    actions = [
+      "sts:AssumeRole"
+    ]
+    resources = [
+      "*"
+    ]
+    effect = "Allow"
+  }
+
+  # statement {
+  #   actions = [
+  #     "es:ESHttpPost"
+  #   ]
+  #   resources = [
+  #     "*"
+  #   ]
+  #   effect = "Allow"
+  # }
 }
 
 resource "aws_iam_policy" "vector_aggregator" {
@@ -105,7 +125,7 @@ resource "aws_iam_policy" "vector_aggregator" {
 
 module "vector_aggregator_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role"
-  version = "6.2.3"
+  version = "6.6.1"
 
   name        = "${data.aws_eks_cluster.eks.name}-vector-aggregator"
   description = "Vector Aggregator IRSA"
