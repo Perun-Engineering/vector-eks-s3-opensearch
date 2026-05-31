@@ -4,7 +4,7 @@ locals {
 
 module "vector_sqs" {
   source  = "terraform-aws-modules/sqs/aws"
-  version = "4.1.0"
+  version = "5.2.2"
 
   name                       = local.sqs_name
   visibility_timeout_seconds = 10
