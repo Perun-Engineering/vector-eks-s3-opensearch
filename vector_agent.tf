@@ -24,7 +24,7 @@ customConfig:
       inputs:
         - added_cluster_name
       type: aws_s3
-      region: "${data.aws_region.current.id}"
+      region: "${data.aws_region.current.region}"
       bucket: "${module.vector_s3_bucket.s3_bucket_id}"
       key_prefix: date=%Y-%m-%d/
       encoding:
@@ -47,7 +47,7 @@ affinity:
 EOF
 
   default_agent_template_vairables = {
-    region       = data.aws_region.current.id,
+    region       = data.aws_region.current.region,
     bucket       = module.vector_s3_bucket.s3_bucket_id
     cluster_name = var.eks_cluster_name
   }
@@ -116,7 +116,7 @@ resource "aws_iam_policy" "vector_agent" {
 
 module "vector_agent_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role"
-  version = "6.2.3"
+  version = "6.6.1"
 
   name        = "${data.aws_eks_cluster.eks.name}-vector-agent"
   description = "Vector Agent IRSA"
