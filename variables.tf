@@ -73,6 +73,18 @@ variable "helm_timeout" {
   }
 }
 
+variable "helm_atomic" {
+  type        = bool
+  default     = false
+  description = "If true, Helm rolls back a release (agent or aggregator) when the upgrade fails. This also sets `wait` to true."
+}
+
+variable "helm_wait" {
+  type        = bool
+  default     = true
+  description = "If true, Terraform waits until all resources of each Helm release (agent and aggregator) are ready, for a maximum of `helm_timeout` seconds."
+}
+
 variable "aggregator_assume_role_arns" {
   type        = list(string)
   default     = []
