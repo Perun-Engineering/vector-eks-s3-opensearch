@@ -36,9 +36,9 @@ In the above diagram, you can see the components and their relations.
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.7 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.47 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | ~> 3.1 |
-| <a name="requirement_utils"></a> [utils](#requirement\_utils) | ~> 2.5 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.73 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | ~> 3.3 |
+| <a name="requirement_utils"></a> [utils](#requirement\_utils) | ~> 2.7 |
 
 ## Providers
 
@@ -52,9 +52,9 @@ In the above diagram, you can see the components and their relations.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_vector_agent_role"></a> [vector\_agent\_role](#module\_vector\_agent\_role) | terraform-aws-modules/iam/aws//modules/iam-role | 6.6.1 |
-| <a name="module_vector_aggregator_role"></a> [vector\_aggregator\_role](#module\_vector\_aggregator\_role) | terraform-aws-modules/iam/aws//modules/iam-role | 6.6.1 |
-| <a name="module_vector_s3_bucket"></a> [vector\_s3\_bucket](#module\_vector\_s3\_bucket) | terraform-aws-modules/s3-bucket/aws | 5.14.0 |
+| <a name="module_vector_agent_role"></a> [vector\_agent\_role](#module\_vector\_agent\_role) | terraform-aws-modules/iam/aws//modules/iam-role | 6.11.1 |
+| <a name="module_vector_aggregator_role"></a> [vector\_aggregator\_role](#module\_vector\_aggregator\_role) | terraform-aws-modules/iam/aws//modules/iam-role | 6.11.1 |
+| <a name="module_vector_s3_bucket"></a> [vector\_s3\_bucket](#module\_vector\_s3\_bucket) | terraform-aws-modules/s3-bucket/aws | 5.18.0 |
 | <a name="module_vector_sqs"></a> [vector\_sqs](#module\_vector\_sqs) | terraform-aws-modules/sqs/aws | 5.2.2 |
 
 ## Resources

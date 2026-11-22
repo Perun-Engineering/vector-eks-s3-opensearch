@@ -119,7 +119,7 @@ resource "aws_iam_policy" "vector_agent" {
 
 module "vector_agent_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role"
-  version = "6.6.1"
+  version = "6.11.1"
 
   name        = "${data.aws_eks_cluster.eks.name}-vector-agent"
   description = "Vector Agent IRSA"

@@ -118,7 +118,7 @@ resource "aws_iam_policy" "vector_aggregator" {
 
 module "vector_aggregator_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role"
-  version = "6.6.1"
+  version = "6.11.1"
 
   name        = "${data.aws_eks_cluster.eks.name}-vector-aggregator"
   description = "Vector Aggregator IRSA"
