@@ -36,25 +36,25 @@ In the above diagram, you can see the components and their relations.
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.7 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.47 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | ~> 3.1 |
-| <a name="requirement_utils"></a> [utils](#requirement\_utils) | ~> 2.5 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.73 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | ~> 3.3 |
+| <a name="requirement_utils"></a> [utils](#requirement\_utils) | ~> 2.7 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.47.0 |
-| <a name="provider_helm"></a> [helm](#provider\_helm) | 3.1.2 |
-| <a name="provider_utils"></a> [utils](#provider\_utils) | 2.5.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.73.0 |
+| <a name="provider_helm"></a> [helm](#provider\_helm) | 3.3.0 |
+| <a name="provider_utils"></a> [utils](#provider\_utils) | 2.7.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_vector_agent_role"></a> [vector\_agent\_role](#module\_vector\_agent\_role) | terraform-aws-modules/iam/aws//modules/iam-role | 6.6.1 |
-| <a name="module_vector_aggregator_role"></a> [vector\_aggregator\_role](#module\_vector\_aggregator\_role) | terraform-aws-modules/iam/aws//modules/iam-role | 6.6.1 |
-| <a name="module_vector_s3_bucket"></a> [vector\_s3\_bucket](#module\_vector\_s3\_bucket) | terraform-aws-modules/s3-bucket/aws | 5.14.0 |
+| <a name="module_vector_agent_role"></a> [vector\_agent\_role](#module\_vector\_agent\_role) | terraform-aws-modules/iam/aws//modules/iam-role | 6.11.1 |
+| <a name="module_vector_aggregator_role"></a> [vector\_aggregator\_role](#module\_vector\_aggregator\_role) | terraform-aws-modules/iam/aws//modules/iam-role | 6.11.1 |
+| <a name="module_vector_s3_bucket"></a> [vector\_s3\_bucket](#module\_vector\_s3\_bucket) | terraform-aws-modules/s3-bucket/aws | 5.18.0 |
 | <a name="module_vector_sqs"></a> [vector\_sqs](#module\_vector\_sqs) | terraform-aws-modules/sqs/aws | 5.2.2 |
 
 ## Resources
@@ -83,12 +83,16 @@ In the above diagram, you can see the components and their relations.
 | <a name="input_agent_template_filename"></a> [agent\_template\_filename](#input\_agent\_template\_filename) | Filename with custom agent configuration. | `string` | `null` | no |
 | <a name="input_agent_template_variables"></a> [agent\_template\_variables](#input\_agent\_template\_variables) | By default agent template has following variables: `region`, `bucket`, and `cluster_name`. Module replaces them inside automatically. If you defined additional variables in the template provided via `agent_template_filename` you need to provide values for them here. | `map(string)` | `{}` | no |
 | <a name="input_agent_values_override"></a> [agent\_values\_override](#input\_agent\_values\_override) | Overrides or extend the Agent Helm default values and/or thouse provided in the custom template `agent_template_filename`. | `any` | `{}` | no |
+| <a name="input_aggregator_assume_role_arns"></a> [aggregator\_assume\_role\_arns](#input\_aggregator\_assume\_role\_arns) | IAM role ARNs that the aggregator role can assume with `sts:AssumeRole`. If the list is empty, the module adds no `sts:AssumeRole` permission. | `list(string)` | `[]` | no |
 | <a name="input_aggregator_template_filename"></a> [aggregator\_template\_filename](#input\_aggregator\_template\_filename) | Filename with custom aggregator configuration. | `string` | `"aggregator.yaml"` | no |
 | <a name="input_aggregator_template_variables"></a> [aggregator\_template\_variables](#input\_aggregator\_template\_variables) | By default aggregator template has following variables: `queue_url`, `endpoint`, `region`, and `eks_cluster_name`. Module replaces them inside automatically. If you defined additional variables in the template provided via `aggregator_template_filename` you need to provide values for them here. | `map(string)` | `{}` | no |
 | <a name="input_aggregator_values_override"></a> [aggregator\_values\_override](#input\_aggregator\_values\_override) | Overrides or extend the Aggregator Helm values provided in the custom template `aggregator_template_filename`. | `any` | `{}` | no |
 | <a name="input_eks_cluster_name"></a> [eks\_cluster\_name](#input\_eks\_cluster\_name) | Name of the EKS cluster where Vector going to be installed. | `string` | n/a | yes |
 | <a name="input_elasticsearch_endpoint"></a> [elasticsearch\_endpoint](#input\_elasticsearch\_endpoint) | Endpoint of OpenSearch (ElasticSearch) to which we are sending logs in format `https://elasticsearch.example.com:443`. | `string` | n/a | yes |
+| <a name="input_helm_atomic"></a> [helm\_atomic](#input\_helm\_atomic) | If true, Helm rolls back a release (agent or aggregator) when the upgrade fails. This also sets `wait` to true. | `bool` | `false` | no |
 | <a name="input_helm_chart_config"></a> [helm\_chart\_config](#input\_helm\_chart\_config) | Helm chart config. Applies to both agent and aggregator. See https://registry.terraform.io/providers/hashicorp/helm/latest/docs | `any` | `{}` | no |
+| <a name="input_helm_timeout"></a> [helm\_timeout](#input\_helm\_timeout) | Time in seconds to wait for each Helm release (agent and aggregator) to become ready. Increase it for large clusters, where the agent DaemonSet roll takes more than 300 seconds. | `number` | `300` | no |
+| <a name="input_helm_wait"></a> [helm\_wait](#input\_helm\_wait) | If true, Terraform waits until all resources of each Helm release (agent and aggregator) are ready, for a maximum of `helm_timeout` seconds. | `bool` | `true` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name or prefix for resources that will be created. | `string` | `"vector"` | no |
 | <a name="input_s3_bucket_name"></a> [s3\_bucket\_name](#input\_s3\_bucket\_name) | By default S3 bucket name generates as `$var.name-$var.eks_cluster_name-logs`. You can override it here by providing custom name. | `string` | `null` | no |
 | <a name="input_s3_bucket_policy"></a> [s3\_bucket\_policy](#input\_s3\_bucket\_policy) | By default we are creating the least priviledgies S3 bucket policy (limited access only for `Agent IAM Role` and `Aggregator IAM Role`). You can override it by providing S3 bucket policy JSON document here. | `string` | `null` | no |

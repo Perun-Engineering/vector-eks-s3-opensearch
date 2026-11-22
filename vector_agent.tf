@@ -5,7 +5,6 @@ customConfig:
   api:
     enabled: true
     address: 127.0.0.1:8686
-    playground: false
   sources:
     kubernetes_logs:
       type: kubernetes_logs
@@ -79,6 +78,9 @@ resource "helm_release" "vector_agent" {
   version          = local.helm_chart_config.version
   namespace        = local.helm_chart_config.namespace
   create_namespace = local.helm_chart_config.create_namespace
+  timeout          = var.helm_timeout
+  atomic           = var.helm_atomic
+  wait             = var.helm_wait
 
   values = [data.utils_deep_merge_yaml.values_agent_merged.output]
 }
@@ -116,7 +118,7 @@ resource "aws_iam_policy" "vector_agent" {
 
 module "vector_agent_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role"
-  version = "6.6.1"
+  version = "6.11.1"
 
   name        = "${data.aws_eks_cluster.eks.name}-vector-agent"
   description = "Vector Agent IRSA"

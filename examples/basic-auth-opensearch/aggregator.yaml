@@ -3,7 +3,6 @@ customConfig:
   api:
     enabled: true
     address: 127.0.0.1:8686
-    playground: false
 
   sources:
     s3_k8s_logs:
@@ -152,9 +151,6 @@ customConfig:
       inputs:
         - remap_php
         - remap_ingress_nginx
-        - remap_nginx_access
-        - remap_socket_server
-        - remap_uppy
         - remap_unmatched
       endpoints:
         - ${endpoint}

@@ -54,6 +54,9 @@ resource "helm_release" "vector_aggregator" {
   version          = local.helm_chart_config.version
   namespace        = local.helm_chart_config.namespace
   create_namespace = local.helm_chart_config.create_namespace
+  timeout          = var.helm_timeout
+  atomic           = var.helm_atomic
+  wait             = var.helm_wait
 
   values = [data.utils_deep_merge_yaml.values_aggregator_merged.output]
 
@@ -93,25 +96,15 @@ data "aws_iam_policy_document" "vector_aggregator" {
     effect = "Allow"
   }
 
-  statement {
-    actions = [
-      "sts:AssumeRole"
-    ]
-    resources = [
-      "*"
-    ]
-    effect = "Allow"
-  }
+  dynamic "statement" {
+    for_each = length(var.aggregator_assume_role_arns) > 0 ? [1] : []
 
-  # statement {
-  #   actions = [
-  #     "es:ESHttpPost"
-  #   ]
-  #   resources = [
-  #     "*"
-  #   ]
-  #   effect = "Allow"
-  # }
+    content {
+      actions   = ["sts:AssumeRole"]
+      resources = var.aggregator_assume_role_arns
+      effect    = "Allow"
+    }
+  }
 }
 
 resource "aws_iam_policy" "vector_aggregator" {
@@ -125,7 +118,7 @@ resource "aws_iam_policy" "vector_aggregator" {
 
 module "vector_aggregator_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role"
-  version = "6.6.1"
+  version = "6.11.1"
 
   name        = "${data.aws_eks_cluster.eks.name}-vector-aggregator"
   description = "Vector Aggregator IRSA"
