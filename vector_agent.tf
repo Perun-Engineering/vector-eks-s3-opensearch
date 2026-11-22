@@ -5,7 +5,6 @@ customConfig:
   api:
     enabled: true
     address: 127.0.0.1:8686
-    playground: false
   sources:
     kubernetes_logs:
       type: kubernetes_logs
