@@ -62,6 +62,23 @@ variable "helm_chart_config" {
   default     = {}
 }
 
+variable "helm_timeout" {
+  type        = number
+  default     = 300
+  description = "Time in seconds to wait for each Helm release (agent and aggregator) to become ready. Increase it for large clusters, where the agent DaemonSet roll takes more than 300 seconds."
+
+  validation {
+    condition     = var.helm_timeout > 0
+    error_message = "The helm_timeout value must be greater than 0."
+  }
+}
+
+variable "aggregator_assume_role_arns" {
+  type        = list(string)
+  default     = []
+  description = "IAM role ARNs that the aggregator role can assume with `sts:AssumeRole`. If the list is empty, the module adds no `sts:AssumeRole` permission."
+}
+
 variable "agent_values_override" {
   description = "Overrides or extend the Agent Helm default values and/or thouse provided in the custom template `agent_template_filename`."
   type        = any

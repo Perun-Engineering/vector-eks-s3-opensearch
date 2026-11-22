@@ -79,6 +79,7 @@ resource "helm_release" "vector_agent" {
   version          = local.helm_chart_config.version
   namespace        = local.helm_chart_config.namespace
   create_namespace = local.helm_chart_config.create_namespace
+  timeout          = var.helm_timeout
 
   values = [data.utils_deep_merge_yaml.values_agent_merged.output]
 }
